@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "501385562834",
+    "project_id": "testinium-f0fe1",
+    "storage_bucket": "testinium-f0fe1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:501385562834:android:743704dff5cf8777b0fb0b",
+        "android_client_info": {
+          "package_name": "com.tapandtest.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "501385562834-4nrrv7m985ujtpp1umb0sp0c3psr6hru.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tapandtest.app",
+            "certificate_hash": "e58e58ac2fcc82d590e17aad1a34d89c7548e887"
+          }
+        },
+        {
+          "client_id": "501385562834-oflnlu6mkjqfokheeqq734q2gu3cku0k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwvOpEfBja4BVI-cNYsACXo5rPFy-7Y5I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "501385562834-oflnlu6mkjqfokheeqq734q2gu3cku0k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

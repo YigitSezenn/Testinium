@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">TapAndTest</string>
+    <string name="default_web_client_id">501385562834-oflnlu6mkjqfokheeqq734q2gu3cku0k.apps.googleusercontent.com</string>
+    <string name="welcome_back">Tekrar hoş geldiniz, %s!</string>
+    <string name="email_text">Email</string>
+    <string name="password_text">Şifre</string>
+    <string name="login_text">Giriş Yap</string>
+    <string name="register_text">Hesabın yok mu? Hemen kayıt ol</string>
+    <string name="forgot_password_text">Şifremi Unuttum</string>
+    <string name="selected_language_Text">Dil Seç</string>
+
+
+
+
+
+
+</resources>
+
+
