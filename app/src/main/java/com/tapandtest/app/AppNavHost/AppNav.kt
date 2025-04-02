@@ -49,7 +49,7 @@ fun scaleOutOfContainer(
 fun AppNavHost(
     modifier: Modifier= Modifier,
     navController: NavHostController,
-    startDestination: String= NavigationItem.LoginScreen.route,
+    startDestination: String= NavigationItem.SplashScreen.route,
     viewModel: AuthViewModel,
 
 

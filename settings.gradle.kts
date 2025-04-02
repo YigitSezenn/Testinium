@@ -22,5 +22,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "TapAndTest"
 include(":app")
-include(":shared")
-include(":shared2")

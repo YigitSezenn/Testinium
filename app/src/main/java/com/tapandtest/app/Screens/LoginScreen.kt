@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -67,16 +68,11 @@ import java.util.Locale
 fun LoginScreen(
     navController: NavController,
     viewModel: AuthViewModel = viewModel(),
-
-
-    ) {
-    //val language
+) {
     val context = LocalContext.current
-
     val oneTapClient = remember { Identity.getSignInClient(context) }
     val googleAuthUiClient = remember { GoogleAuthUiClient(context, oneTapClient) }
     val coroutineScope = rememberCoroutineScope()
-
 
     // Updated googleSignInLauncher
     val googleSignInLauncher = rememberLauncherForActivityResult(
@@ -110,10 +106,9 @@ fun LoginScreen(
     // SharedPreferences to retrieve the user's name
     val sharedPreferences =
         LocalContext.current.getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
-    var currentLocale by remember { mutableStateOf(sharedPreferences.getString("language", Locale.getDefault().language) ?: "en") }
 
     val name = sharedPreferences.getString("name", "") ?: ""
-
+    var currentLocale = sharedPreferences.getString("language", "") ?: ""
 
     Column(
         modifier = Modifier
@@ -128,9 +123,6 @@ fun LoginScreen(
             Modifier.size(250.dp)
         )
 
-        // Dark Mode Switch
-
-
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
@@ -138,15 +130,12 @@ fun LoginScreen(
             color = AppColors.TextDarkPurple,
             style = MaterialTheme.typography.bodyMedium.copy(fontSize = 20.sp)
         )
-        Text(
-            text ="$name",
-            color = AppColors.TextDarkPurple,
-            style = MaterialTheme.typography.bodyMedium.copy(fontSize = 20.sp)
-        )
 
         // Email TextField
         OutlinedTextField(
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
             value = Eposta,
             onValueChange = { Eposta = it },
             label = {
@@ -158,7 +147,11 @@ fun LoginScreen(
                         modifier = Modifier.size(24.dp),
                     )
                     Spacer(modifier = Modifier.size(8.dp))
-                    Text("Eposta")
+                    Text(
+                        text = getString(context, R.string.email_text, currentLocale, "E-posta"),
+                        color = AppColors.TextDarkPurple,
+                        style = MaterialTheme.typography.bodyMedium.copy(fontSize = 12.sp)
+                    )
                 }
             },
             colors = TextFieldDefaults.colors(
@@ -171,7 +164,9 @@ fun LoginScreen(
 
         // Password TextField
         OutlinedTextField(
-            modifier = Modifier.padding(4.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(4.dp),
             value = password,
             onValueChange = { password = it },
             visualTransformation = PasswordVisualTransformation(),
@@ -184,7 +179,11 @@ fun LoginScreen(
                         modifier = Modifier.size(24.dp),
                     )
                     Spacer(modifier = Modifier.size(8.dp))
-                    Text("Şifre")
+                    Text(
+                        text = getString(context, R.string.password_text, currentLocale, "Şifre"),
+                        color = AppColors.TextDarkPurple,
+                        style = MaterialTheme.typography.bodyMedium.copy(fontSize = 12.sp)
+                    )
                 }
             },
             colors = TextFieldDefaults.colors(
@@ -197,19 +196,22 @@ fun LoginScreen(
 
         // Login Button
         Button(
-            onClick = { navController.navigate(NavigationItem.SplashScreen.route) },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = AppColors.ButtonAccent,
-                contentColor = Color.White,
-                disabledContainerColor = AppColors.ButtonDisabled
-            ),
+
+                onClick = {
+                    //login işlemleri
+                    navController.navigate(NavigationItem.BaseScreen.route) },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = AppColors.ButtonAccent,
+                    contentColor = Color.White,
+                    disabledContainerColor = AppColors.ButtonDisabled
+                ),
             contentPadding = ButtonDefaults.ContentPadding,
             modifier = Modifier
+                .fillMaxWidth()
                 .padding(8.dp)
                 .height(50.dp)
-                .width(300.dp)
         ) {
-            Text(text = "Giriş yap", color = AppColors.TextPrimary)
+            Text(text = getString(context, R.string.login_text, currentLocale, "Giriş Yap"), color = AppColors.TextPrimary)
         }
 
         // Google Sign-In Button
@@ -230,9 +232,9 @@ fun LoginScreen(
             ),
             contentPadding = ButtonDefaults.ContentPadding,
             modifier = Modifier
+                .fillMaxWidth()
                 .padding(8.dp)
                 .height(50.dp)
-                .width(300.dp)
         ) {
             Image(
                 painterResource(R.drawable.google),
@@ -240,12 +242,17 @@ fun LoginScreen(
                 modifier = Modifier.size(24.dp)
             )
             Spacer(modifier = Modifier.size(8.dp))
-            Text("Google ile giriş yap", color = AppColors.TextDarkPurple)
+            Text(
+                text = getString(context, R.string.google_text, currentLocale, "Google ile giriş yap"),
+                color = AppColors.TextDarkPurple,
+                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 12.sp)
+            )
         }
+
         // Register Button
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Hesabınız yok mu? Kayıt ol",
+            text = getString(context, R.string.registernav_text, currentLocale, "Hesabın yok mu? Kayıt ol!"),
             color = AppColors.TextDarkPurple,
             style = TextStyle(fontSize = 16.sp),
             modifier = Modifier
@@ -253,51 +260,13 @@ fun LoginScreen(
                     navController.navigate(NavigationItem.RegisterScreen.route)
                 }
         )
-        Row {
-            TextButton(
-                onClick = {
-                    currentLocale = "en"
-                    sharedPreferences.edit().putString("language", currentLocale).apply()
-
-
-                },
-                modifier = Modifier.padding(8.dp)
-            ) {
-
-                Text(
-                    text = "English",
-                    color = AppColors.TextDarkPurple,
-                    style = TextStyle(fontSize = 16.sp)
-                )
-
-            }
-            TextButton(
-                onClick = {
-                    currentLocale = "tr"
-                    sharedPreferences.edit().putString("language", currentLocale).apply() // Türkçe olarak kaydet
-
-
-                },
-                modifier = Modifier.padding(8.dp)
-            ) {
-
-                Text(
-                    text = "Türkçe",
-                    color = AppColors.TextDarkPurple,
-                    style = TextStyle(fontSize = 16.sp)
-                )
-
-            }
-        }
     }
 }
 
 
-fun getString(context: Context, resId: Int, localeCode: String, string: String,): String {
+fun getString(context: Context, resId: Int, localeCode: String, vararg formatArgs: Any): String {
     val config = context.resources.configuration
-    config.setLocale(Locale(localeCode)) // Kullanıcının seçtiği dilde ayarla
-    return context.createConfigurationContext(config).resources.getString(resId, string)
-        .replace("\\n".toRegex(), "\n") // Yeni satır karakterlerini düzenle
-        .replace("\\t".toRegex(), "\t") // Tab karakterlerini düzenle
-        .replace("\\r".toRegex(), "\r") // Satır başı karakterlerini düzenle
+    config.setLocale(Locale(localeCode)) // Kullanıcının seçtiği dili ayarla
+    val localizedContext = context.createConfigurationContext(config)
+    return localizedContext.resources.getString(resId, *formatArgs)
 }

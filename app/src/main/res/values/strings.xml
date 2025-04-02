@@ -2,16 +2,24 @@
     <string name="app_name">TapAndTest</string>
     <string name="default_web_client_id">501385562834-oflnlu6mkjqfokheeqq734q2gu3cku0k.apps.googleusercontent.com</string>
     <string name="welcome_back">Tekrar hoş geldiniz, %s!</string>
-    <string name="email_text">Email</string>
+    <string name="email_text">Eposta</string>
+    <string name="google_text">Google ile giriş yap</string>
     <string name="password_text">Şifre</string>
     <string name="login_text">Giriş Yap</string>
-    <string name="register_text">Hesabın yok mu? Hemen kayıt ol</string>
+    <string name="register_welcome_text">
+    Test süreçlerini takip et,hataları kaydet  %n  ve görevlerini yönet.Hemen kaydol!
+</string>
+    <string name="passwordlength_text" >Şifre 6 karakterden uzun olmalıdır</string>
+     <string name="combo_boxnull" >Lütfen Geçerli Bir Meslek Seçiniz</string>
+    <string name="name_input">Adınız ve Soyadınız</string>
+    <string name="registernav_text">Hesabın yok mu?Hemen kayıt ol</string>
+    <string name="loginav_text">Zaten bir hesabınız var mı? Giriş yapın</string>
+    <string name="combobox_text" >Lütfen Mesleğinizi Seçiniz</string>
+    <string name="registerbutton_text">Kayıt ol</string>
     <string name="forgot_password_text">Şifremi Unuttum</string>
-    <string name="selected_language_Text">Dil Seç</string>
-
-
-
-
+    <string name="select_theme">Tema Seç</string>
+    <string name="registersuccess_text"> Kayıt Başarılı </string>
+    <string name="allinputs_null"> Lütfen tüm alanları doldurunuz </string>
 
 
 </resources>

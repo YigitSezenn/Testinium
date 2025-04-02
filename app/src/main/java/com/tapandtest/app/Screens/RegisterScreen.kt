@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -27,6 +28,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -35,6 +37,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -49,6 +52,7 @@ import com.tapandtest.app.AppNavHost.NavigationItem
 
 import com.tapandtest.app.R
 import com.tapandtest.app.firebaseviewmodel.AuthViewModel
+import java.util.Locale
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -56,57 +60,50 @@ import com.tapandtest.app.firebaseviewmodel.AuthViewModel
 fun RegisterScreen(
     navController: NavController,
     viewModel: AuthViewModel
-
 ) {
     val context = LocalContext.current
-    val sharedPreferences =
-        LocalContext.current.getSharedPreferences("myPrefs",
-            Context.MODE_PRIVATE)
+    val sharedPreferences = context.getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
 
-
-    var name by remember { mutableStateOf("") } // Başlangıçta tamamen boş
+    var name by remember { mutableStateOf("") }
     var Eposta by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var expended by remember { mutableStateOf(false) }
-    val developerList =
-        DropDownData.developerlist // developerList -> DropDownData sınıfındaki developerlist listesini alır.
     var selectedDeveloper by remember { mutableStateOf("") }
-    // selectedDeveloper -> Seçilen geliştiriciyi alır.
+    var currentLocale by remember {
+        mutableStateOf(
+            sharedPreferences.getString(
+                "language",
+                Locale.getDefault().language
+            ) ?: "en"
+        )
+    }
 
-    // developerlist.first()["name"].toString() ->
-    // developerlist listesinin ilk elemanının adını alır.
-
-
-    // RegisterScreen ekranının tasarımı burada yapılacak.
-
+    val developerList = DropDownData.developerlist
 
     Column(
         modifier = Modifier
-            .fillMaxSize() //  Ekranın tamamını kaplar.
-
+            .fillMaxSize()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
-
-
-    )
-
-    {
-
+    ) {
         Image(
-            painterResource(R.drawable.registerscreen),
+            painter = painterResource(R.drawable.registerscreen),
             contentDescription = "RegisterScreen",
-            Modifier.size(250.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp) // Orantılı boyutlandırma
         )
+
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "Test süreçlerini takip et," +
-                    "hataları kaydet ve \ngörevlerini yönet.Hemen kaydol!",
+            text = getString(context, R.string.register_welcome_text, localeCode = currentLocale),
             color = AppColors.TextDarkPurple,
             style = TextStyle(fontSize = 16.sp)
         )
 
+        // Dropdown Menü
         ExposedDropdownMenuBox(
             expanded = expended,
             onExpandedChange = { expended = !expended },
@@ -121,6 +118,7 @@ fun RegisterScreen(
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically
+
                     ) {
                         Icon(
                             imageVector = Icons.Default.ArrowDropDown,
@@ -130,7 +128,13 @@ fun RegisterScreen(
                         )
                         Spacer(modifier = Modifier.size(8.dp))
                         Text(
-                            "Lütfen Alanınızı Seçiniz"
+                            text = getString(
+                                context,
+                                R.string.combobox_text,
+                                localeCode = currentLocale,
+                            ),
+                            color = AppColors.TextDarkPurple,
+                            style = TextStyle(fontSize = 16.sp)
 
 
                         )
@@ -139,10 +143,12 @@ fun RegisterScreen(
                     }
                 },
 
+
                 readOnly = true,
 
                 modifier = Modifier
-                    .padding(8.dp)
+
+                    .fillMaxWidth()
                     .menuAnchor() //  Menüyü açarken TextField'ın altında olmasını sağlar.s
                     .clickable { expended = !expended } //  Menü aç/kapat
 
@@ -165,110 +171,73 @@ fun RegisterScreen(
         }
 
 
-
-
-
-
-
-
-
+        // Input Fields
         OutlinedTextField(
-            modifier = Modifier
-                .padding(4.dp),
             value = name,
-
-
-            onValueChange = {
-                name = it
+            onValueChange = { name = it },
+            label = { Text(getString(context, R.string.name_input, localeCode = currentLocale)) },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.AccountBox,
+                    contentDescription = null,
+                    tint = AppColors.TextDarkPurple
+                )
             },
-
-
-            label = {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-
-                    Icon(
-                        imageVector = Icons.Default.AccountBox,
-                        contentDescription = null,
-                        tint = AppColors.TextDarkPurple,
-                        modifier = Modifier.size(24.dp),
-                    )
-                    Spacer(modifier = Modifier.size(8.dp))
-                    Text("Ad Soyad")
-
-                }
-
-
-            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = AppColors.TextDarkPurple,
                 unfocusedBorderColor = AppColors.TextDarkBrown
             )
-
         )
 
         OutlinedTextField(
-            modifier = Modifier
-                .padding(8.dp),
             value = Eposta,
-            onValueChange = {
-                Eposta = it
+            onValueChange = { Eposta = it },
+            label = { Text(getString(context, R.string.email_text, localeCode = currentLocale)) },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Email,
+                    contentDescription = null,
+                    tint = AppColors.TextDarkPurple
+                )
             },
-            label = {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Email,
-                        contentDescription = null,
-                        tint = AppColors.TextDarkPurple,
-                        modifier = Modifier.size(24.dp),
-                    )
-                    Spacer(modifier = Modifier.size(8.dp))
-
-                    Text("Eposta")
-
-                }
-
-
-            },
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.Transparent,  // Arka plan rengi
-                unfocusedContainerColor = Color.Transparent,
-                focusedIndicatorColor = AppColors.TextDarkPurple, // Çerçeve rengi
-                unfocusedIndicatorColor = AppColors.TextDarkBrown
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = AppColors.TextDarkPurple,
+                unfocusedBorderColor = AppColors.TextDarkBrown
             )
         )
+
         OutlinedTextField(
-            modifier = Modifier
-                .padding(4.dp),
             value = password,
-            onValueChange = {
-                password = it
+            onValueChange = { password = it },
+            label = {
+                Text(
+                    getString(
+                        context,
+                        R.string.password_text,
+                        localeCode = currentLocale,
+                    )
+                )
+            },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Email,
+                    contentDescription = null,
+                    tint = AppColors.TextDarkPurple
+                )
             },
             visualTransformation = PasswordVisualTransformation(),
-            label = {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Email,
-                        contentDescription = null,
-                        tint = AppColors.TextDarkPurple,
-                        modifier = Modifier.size(24.dp),
-                    )
-                    Spacer(modifier = Modifier.size(8.dp))
-
-                    Text("Şifre")
-
-                }
-
-
-            },
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.Transparent,  // Arka plan rengi
-                unfocusedContainerColor = Color.Transparent,
-                focusedIndicatorColor = AppColors.TextDarkPurple, // Çerçeve rengi
-                unfocusedIndicatorColor = AppColors.TextDarkBrown
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = AppColors.TextDarkPurple,
+                unfocusedBorderColor = AppColors.TextDarkBrown
             )
         )
 
@@ -276,77 +245,70 @@ fun RegisterScreen(
             onClick = {
                 if (name.isNotEmpty() && Eposta.isNotEmpty() && password.isNotEmpty()) {
                     viewModel.RegisterViewModel(Eposta, password) { message ->
-
-                        Toast.makeText(context, message, Toast.LENGTH_SHORT)
-                            .show()
-                        if (message == "Kayıt Başarılı") {
-
-                            sharedPreferences.edit().putString("name", name).apply()
-                            println("Name before registration: $name") // Logcat'te görünür
-                            navController.navigate(NavigationItem.LoginScreen.route)
-
+                        if (password.length < 6) {
+                            Toast.makeText(context, "Şifre en az 6 karakter olmalıdır", Toast.LENGTH_SHORT).show()
                         }
-
+                        // Geliştirici seçilip seçilmediğini kontrol et
+                        else if (selectedDeveloper.isEmpty()) {
+                            Toast.makeText(context, "Lütfen bir geliştirici seçin", Toast.LENGTH_SHORT).show()
+                        }
+                        // Kayıt başarılı ise, adını kaydet ve giriş ekranına yönlendir
+                        else if (message == "Kayıt Başarılı") {
+                            sharedPreferences.edit().putString("name", name).apply()
+                            navController.navigate(NavigationItem.LoginScreen.route)
+                        }
                     }
 
-
-
-
-
-
-                    Eposta = "" // Input'u temizle
-                    password = "" // Input'u temizle
                 } else {
-                    Toast.makeText(context, "Lütfen tüm alanları doldurunuz", Toast.LENGTH_SHORT)
-                        .show()
-
+                    Toast.makeText(context, "Lütfen tüm alanları doldurunuz", Toast.LENGTH_SHORT).show()
                 }
-
-
             },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = AppColors.ButtonAccent, // Normal hali
-                contentColor = Color.White, // İçindeki yazı rengi
-                disabledContainerColor = AppColors.ButtonDisabled,
-
-
-                ),
-
-            contentPadding = ButtonDefaults.ContentPadding,
-
-
             modifier = Modifier
-                .padding(
-                    8.dp
-                )
+                .fillMaxWidth()
                 .height(50.dp)
-                .width(300.dp)
-
-
+                .padding(8.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = AppColors.ButtonAccent,
+                contentColor = Color.White
+            )
         ) {
             Text(
-                text = "Kayıt ol",
+                text = getString(
+                    context,
+                    R.string.registerbutton_text,
+                    localeCode = currentLocale,
+                ),
                 color = AppColors.TextPrimary
-
             )
         }
+
         Spacer(modifier = Modifier.height(16.dp))
+
         Text(
-            text = "Zaten bir hesabınız var mı? Giriş yapın",
+            text = getString(context, R.string.loginav_text, localeCode = currentLocale),
             color = AppColors.TextDarkPurple,
-            style = TextStyle(fontSize = 16.sp),
-            modifier = Modifier
-                .clickable {
-                    navController.navigate(NavigationItem.LoginScreen.route)
-                }
+            fontSize = 16.sp,
+            modifier = Modifier.clickable {
+                navController.navigate(NavigationItem.LoginScreen.route)
+            }
         )
 
-        // RegisterScreen ekranının tasarımı burada yapılacak.
-
-
+        // Dil Seçimi
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
+            TextButton(onClick = {
+                currentLocale = "en"
+                sharedPreferences.edit().putString("language", currentLocale).apply()
+            }) {
+                Text("EN", color = AppColors.TextDarkPurple)
+            }
+            TextButton(onClick = {
+                currentLocale = "tr"
+                sharedPreferences.edit().putString("language", currentLocale).apply()
+            }) {
+                Text("TR", color = AppColors.TextDarkPurple)
+            }
+        }
     }
 }
-
-// RegisterScreen ekranı için gerekli olan işlemler burada yapılacak.
 
 

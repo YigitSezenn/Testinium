@@ -48,7 +48,8 @@ dependencies {
     implementation(libs.koin.core)
     implementation(libs.koin.compose)
     implementation(libs.remember.settings)
-
+    implementation("io.coil-kt:coil-compose:2.7.0")
+    implementation("com.github.skydoves:landscapist-glide:2.4.7")
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.auth)
     implementation(libs.androidx.credentials)
@@ -61,7 +62,7 @@ dependencies {
     //noinspection UseTomlInstead
     implementation("com.github.skydoves:landscapist-glide:2.4.7")
     //firebase
-    implementation(platform("com.google.firebase:firebase-bom:33.11.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
 
     //noinspection UseTomlInstead
     implementation ("com.google.android.gms:play-services-auth:21.3.0")
@@ -72,8 +73,8 @@ dependencies {
     implementation("androidx.compose.animation:animation:1.7.8")
     // Views/Fragments integration
     implementation("androidx.navigation:navigation-fragment:$nav_version")
-    implementation("androidx.navigation:navigation-ui:$nav_version")
-    implementation("androidx.navigation:navigation-dynamic-features-fragment:$nav_version")
+    implementation("androidx.navigation:navigation-ui:2.9.0-alpha09")
+    implementation("androidx.navigation:navigation-dynamic-features-fragment:2.9.0-alpha09")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
