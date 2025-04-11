@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "501385562834-4nrrv7m985ujtpp1umb0sp0c3psr6hru.apps.googleusercontent.com",
+          "client_id": "501385562834-75mvgdkb7ol33qd332uqd574b3ngk7ne.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.tapandtest.app",
-            "certificate_hash": "e58e58ac2fcc82d590e17aad1a34d89c7548e887"
+            "certificate_hash": "132832a93421bc51d2fdd64456ed9c2f5ade40db"
           }
         },
         {

@@ -255,6 +255,7 @@ fun RegisterScreen(
                         // Kayıt başarılı ise, adını kaydet ve giriş ekranına yönlendir
                         else if (message == "Kayıt Başarılı") {
                             sharedPreferences.edit().putString("name", name).apply()
+                            sharedPreferences.edit().putString("last_screen", NavigationItem.LoginScreen.route).apply()
                             navController.navigate(NavigationItem.LoginScreen.route)
                         }
                     }
@@ -265,7 +266,7 @@ fun RegisterScreen(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(50.dp)
+                .height(70.dp)
                 .padding(8.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = AppColors.ButtonAccent,
