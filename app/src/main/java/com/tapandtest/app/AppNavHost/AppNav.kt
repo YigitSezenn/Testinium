@@ -16,7 +16,6 @@ import androidx.navigation.compose.composable
 import com.tapandtest.app.Screens.BaseScreen
 import com.tapandtest.app.Screens.LoginScreen
 import com.tapandtest.app.Screens.RegisterScreen
-import com.tapandtest.app.Screens.SplashScreen
 import com.tapandtest.app.firebaseviewmodel.AuthViewModel
 
 enum class ScaleTransitionDirection {
@@ -49,7 +48,7 @@ fun scaleOutOfContainer(
 fun AppNavHost(
     modifier: Modifier= Modifier,
     navController: NavHostController,
-    startDestination: String= NavigationItem.SplashScreen.route,
+    startDestination: String= NavigationItem.BaseScreen.route,
     viewModel: AuthViewModel,
 
 
@@ -74,9 +73,6 @@ fun AppNavHost(
               RegisterScreen(navController, viewModel)
          }
 
-             composable(NavigationItem.SplashScreen.route) {
-                 SplashScreen(navController)
-             }
 
        composable(NavigationItem.LoginScreen.route) {
            LoginScreen(navController)

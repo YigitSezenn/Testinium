@@ -57,6 +57,9 @@ dependencies {
     implementation(libs.googleid)
     val nav_version = "2.8.9"
     implementation(libs.androidx.core.splashscreen)
+    dependencies {
+        implementation("com.exyte:animated-navigation-bar:1.0.0")
+    }
     //noinspection UseTomlInstead
     implementation("com.github.bumptech.glide:glide:5.0.0-rc01")
     //noinspection UseTomlInstead

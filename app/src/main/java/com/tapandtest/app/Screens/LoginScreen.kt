@@ -1,10 +1,12 @@
 package com.tapandtest.app.Screens
 
+
 import GoogleAuthUiClient
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.util.Log
+import android.util.Patterns
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
@@ -20,7 +22,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Email
@@ -32,7 +33,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -51,14 +51,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-
 import com.google.android.gms.auth.api.identity.Identity
 import com.tapandtest.app.AppColor.AppColors
 import com.tapandtest.app.AppNavHost.NavigationItem
 import com.tapandtest.app.R
 import com.tapandtest.app.firebaseviewmodel.AuthViewModel
-
-
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -110,6 +107,8 @@ fun LoginScreen(
     val name = sharedPreferences.getString("name", "") ?: ""
     var currentLocale = sharedPreferences.getString("language", "") ?: ""
 
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -126,7 +125,7 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = getString(context, R.string.welcome_back, currentLocale, "$name"),
+            text = getString(context, R.string.welcome_back, currentLocale, name),
             color = AppColors.TextDarkPurple,
             style = MaterialTheme.typography.bodyMedium.copy(fontSize = 20.sp)
         )
@@ -198,8 +197,36 @@ fun LoginScreen(
         Button(
 
                 onClick = {
+                    if (Eposta.isEmpty() || password.isEmpty()) {
+                        Toast.makeText(context, "Lütfen tüm alanları doldurun", Toast.LENGTH_SHORT).show()
+                        return@Button
+                    }
+
+                    if (Eposta.length < 5 || password.length < 6) {
+                        Toast.makeText(context, "E-posta veya şifre çok kısa", Toast.LENGTH_SHORT).show()
+                        return@Button
+                    }
+
+// E-posta doğrulama kontrolü
+                    if (!Patterns.EMAIL_ADDRESS.matcher(Eposta).matches()) {
+                        Toast.makeText(context, "Geçerli bir e-posta adresi girin", Toast.LENGTH_SHORT).show()
+                        return@Button
+                    }
+
+                    viewModel.loginviewModel(Eposta, password) { success, message ->
+                        if (success) {
+                            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                            // Giriş başarılı olduğunda yapılacak işlemler
+
+                            navController.navigate(NavigationItem.BaseScreen.route)
+                            sharedPreferences.edit().putString("last_screen", NavigationItem.BaseScreen.route).apply()
+                        } else {
+                            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
                     //login işlemleri
-                    navController.navigate(NavigationItem.BaseScreen.route) },
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = AppColors.ButtonAccent,
                     contentColor = Color.White,

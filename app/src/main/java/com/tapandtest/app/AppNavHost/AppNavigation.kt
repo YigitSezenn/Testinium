@@ -15,7 +15,6 @@ import java.util.Objects
 
 enum class AppNavigation {
     RegisterScreen, // Kayıt ekranını temsil eden bir enum değeri.
-    SplashScreen,
     LoginScreen,// Splash ekranını temsil eden bir enum değeri.
     BaseScreen
 }
@@ -25,7 +24,7 @@ sealed class NavigationItem(val route: String) {
     object RegisterScreen : NavigationItem(AppNavigation.RegisterScreen.name)
 
     // SplashScreen için route
-    object SplashScreen : NavigationItem(AppNavigation.SplashScreen.name)
+
 
     object  LoginScreen : NavigationItem(AppNavigation.LoginScreen.name)
 
