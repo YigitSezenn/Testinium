@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">TapAndTest</string>
     <string name="default_web_client_id">501385562834-oflnlu6mkjqfokheeqq734q2gu3cku0k.apps.googleusercontent.com</string>
-    <string name="welcome_back">Tekrar hoş geldiniz, %s!</string>
+    <string name="welcome_back">Tekrar hoş geldiniz, %s</string>
     <string name="email_text">Eposta</string>
     <string name="google_text">Google ile giriş yap</string>
     <string name="password_text">Şifre</string>
@@ -20,6 +20,7 @@
     <string name="select_theme">Tema Seç</string>
     <string name="registersuccess_text"> Kayıt Başarılı </string>
     <string name="allinputs_null"> Lütfen tüm alanları doldurunuz </string>
+    <string name="AddImage" >Profil Resmi Yükle</string>
 
 
 </resources>

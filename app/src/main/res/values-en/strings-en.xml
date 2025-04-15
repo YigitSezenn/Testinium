@@ -18,5 +18,6 @@
     <string name="combo_boxnull" >Please Select a Valid Profession</string>
     <string name="passwordlength_text" >Password must be longer than 6 characters</string>
     <string name="registersuccess_text">  Register Succes </string>
-    <string name="allinputs_null"> Lütfen tüm alanları doldurunuz </string>
+    <string name="allinputs_null"> Please fill in all fields</string>
+    <string name="AddImage" >Upload Profile Picture </string>
 </resources>

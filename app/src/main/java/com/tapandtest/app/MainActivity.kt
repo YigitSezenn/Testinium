@@ -48,14 +48,17 @@ import com.tapandtest.app.AppColor.AppColors
 import com.tapandtest.app.AppNavHost.AppNavHost
 import com.tapandtest.app.AppNavHost.NavigationItem
 import com.tapandtest.app.ui.theme.TapAndTestTheme
+import org.checkerframework.checker.units.qual.Current
+import kotlin.apply
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         val sharedPreferences = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val name = sharedPreferences.getString("name", "")
 
-        val lastScreen = sharedPreferences.getString("last_screen", NavigationItem.LoginScreen.route)
+        val lastScreen = sharedPreferences.getString("last_screen", NavigationItem.BaseScreen.route)
 
         setContent {
 
@@ -81,7 +84,7 @@ private fun AppContent(startDestination: String) {
 
             currentRoute?.destination?.route != NavigationItem.LoginScreen.route
     // Determine whether to show the theme toggle button (only on RegisterScreen)
-    val shouldShowThemeToggle = currentRoute ?.destination?.route == NavigationItem.RegisterScreen.route
+    val shouldShowThemeToggle = currentRoute ?.destination?.route == NavigationItem.ProfileScreen.route
     TapAndTestTheme(darkTheme = isDarkTheme) {
         // Save the theme preference when it changes
         LaunchedEffect(isDarkTheme) {
@@ -185,8 +188,10 @@ private fun ThemeToggleButton(
 enum class NavigationBarItems(val title: String, val icon: ImageVector) {
     Person(
         title = "Kişi",
-        icon = Icons.Default.Person
+        icon = Icons.Default.Person,
+
     ),
+
     Call(
         title = "Arama",
         icon = Icons.Default.Call
@@ -206,18 +211,29 @@ fun BottomNavigationBar(
 ) {
 
     val context = LocalContext.current
+    val sharedPreferences = context.getSharedPreferences("last_screen", Context.MODE_PRIVATE)
     val navigationBarItems = remember { NavigationBarItems.values().toList() }
-    val navController = rememberNavController()
-    val (selectedIndex, setSelectedIndex) = remember { mutableStateOf(0) }
+    var (selectedIndex, setSelectedIndex) =  remember { mutableStateOf(
+        sharedPreferences.getInt("last_selected_index", 0)) }
 
+    LaunchedEffect(navController.currentBackStackEntry) {
+        val currentRoute = navController.currentDestination?.route
+        val newIndex = navigationBarItems.indexOfFirst {
+            it.title == currentRoute
+        }
+        if (newIndex != -1) {
+            selectedIndex = newIndex
+        }
+    }
 
 
             AnimatedNavigationBar(
                 modifier = Modifier.height(64.dp).padding(2.dp),
                 selectedIndex = selectedIndex,
+
                 cornerRadius = shapeCornerRadius(cornerRadius = 32.dp), // Kenar yuvarlama
                 ballColor = AppColors.PrimaryPurple,
-                ballAnimation = Straight(tween(durationMillis = 300)),
+                ballAnimation = Parabolic(tween(durationMillis = 300)),
                 indentAnimation = Height(tween(durationMillis = 300)),
                 barColor = AppColors.TextDarkPurple,
             ) {
@@ -225,7 +241,34 @@ fun BottomNavigationBar(
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
-                            .clickable { setSelectedIndex(index) },
+                            .clickable { setSelectedIndex(index)
+                                sharedPreferences.edit() { putInt("last_selected_index", index) }
+                                when(item)
+                                {
+                                    NavigationBarItems.Person -> {
+
+
+
+                                        navController.navigate(NavigationItem.BaseScreen.route) {
+                                            popUpTo(NavigationItem.RegisterScreen.route) { inclusive = true }
+                                        }
+                                    }
+
+                                    NavigationBarItems.Call -> {
+                                        navController.navigate(NavigationItem.BaseScreen.route) {
+                                            popUpTo(NavigationItem.BaseScreen.route) { inclusive = true }
+                                        }
+                                    }
+
+                                    NavigationBarItems.Settings -> {
+
+                                            }
+                                        }
+
+                                        navController.navigate(NavigationItem.ProfileScreen.route) {
+                                            popUpTo(NavigationItem.ProfileScreen.route) { inclusive = true }
+                                        }
+                                    },
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
@@ -240,41 +283,4 @@ fun BottomNavigationBar(
         }
 
 
-//        @Composable
-//fun BottomNavigationBar(
-//    navController: NavController
-//) {
-//    val navigationBarItems = remember { NavigationBarItems.values().toList() }
-//    val (selectedIndex, setSelectedIndex) = remember { mutableStateOf(0) }
-//
-//    AnimatedNavigationBar(
-//        modifier = Modifier
-//            .height(64.dp)
-//            .padding(2.dp),
-//        selectedIndex = selectedIndex,
-//        cornerRadius = shapeCornerRadius(cornerRadius = 32.dp),
-//        ballColor = AppColors.PrimaryPurple,
-//        ballAnimation = Straight(tween(durationMillis = 300)),
-//        indentAnimation = Height(tween(durationMillis = 300)),
-//        barColor = AppColors.TextDarkPurple,
-//    ) {
-//        navigationBarItems.forEachIndexed { index, item ->
-//            Box(
-//                modifier = Modifier
-//                    .fillMaxSize()
-//                    .clickable {
-//                        setSelectedIndex(index)
-//                        navController.navigate(item.ordinal) // route'u kendi enumundan al
-//                    },
-//                contentAlignment = Alignment.Center
-//            ) {
-//                Icon(
-//                    modifier = Modifier.size(26.dp),
-//                    imageVector = item.icon,
-//                    contentDescription = item.title,
-//                    tint = if (selectedIndex == index) AppColors.PastelPurple else AppColors.Background
-//                )
-//            }
-//        }
-//    }
-//}
+

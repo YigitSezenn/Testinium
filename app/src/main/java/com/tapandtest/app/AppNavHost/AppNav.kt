@@ -15,6 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.tapandtest.app.Screens.BaseScreen
 import com.tapandtest.app.Screens.LoginScreen
+import com.tapandtest.app.Screens.ProfileScreen
 import com.tapandtest.app.Screens.RegisterScreen
 import com.tapandtest.app.firebaseviewmodel.AuthViewModel
 
@@ -79,6 +80,9 @@ fun AppNavHost(
        }
        composable(NavigationItem.BaseScreen.route) {
            BaseScreen(navController)
+       }
+       composable(NavigationItem.ProfileScreen.route) {
+           ProfileScreen(navController, viewModel)
        }
 
     }

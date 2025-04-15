@@ -109,6 +109,7 @@ fun LoginScreen(
 
 
 
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -220,6 +221,7 @@ fun LoginScreen(
 
                             navController.navigate(NavigationItem.BaseScreen.route)
                             sharedPreferences.edit().putString("last_screen", NavigationItem.BaseScreen.route).apply()
+
                         } else {
                             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                         }
