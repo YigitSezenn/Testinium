@@ -49,6 +49,9 @@ dependencies {
     implementation(libs.koin.compose)
     implementation(libs.remember.settings)
     implementation("io.coil-kt:coil-compose:2.7.0")
+    implementation("com.google.firebase:firebase-database")
+    implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
+
     implementation("com.github.skydoves:landscapist-glide:2.4.7")
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.auth)
@@ -69,7 +72,21 @@ dependencies {
 
     //noinspection UseTomlInstead
     implementation ("com.google.android.gms:play-services-auth:21.3.0")
+
+    // FirebaseStroge
+
+    // Import the BoM for the Firebase platform
+
+
+    // Declare the dependency for the Cloud Firestore library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-storage-ktx")
+
     // navigation
+    
+        implementation("io.coil-kt:coil-compose:2.6.0") // Coil Compose entegrasyonu
+
     implementation("com.google.firebase:firebase-analytics")
 
     implementation("androidx.navigation:navigation-compose:$nav_version")

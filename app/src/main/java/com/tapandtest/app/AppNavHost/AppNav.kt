@@ -1,6 +1,10 @@
 package com.tapandtest.app.AppNavHost
 
 
+
+import TimerViewModel
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
@@ -13,9 +17,12 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.tapandtest.app.AppNavHost.NavigationItem.RegisterScreen
 import com.tapandtest.app.Screens.BaseScreen
 import com.tapandtest.app.Screens.LoginScreen
 import com.tapandtest.app.Screens.ProfileScreen
+
+
 import com.tapandtest.app.Screens.RegisterScreen
 import com.tapandtest.app.firebaseviewmodel.AuthViewModel
 
@@ -44,14 +51,15 @@ fun scaleOutOfContainer(
     ) + fadeOut(tween(delayMillis = 100))
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @JvmOverloads
 fun AppNavHost(
     modifier: Modifier= Modifier,
     navController: NavHostController,
-    startDestination: String= NavigationItem.BaseScreen.route,
+    startDestination: String= RegisterScreen.route,
     viewModel: AuthViewModel,
-
+    timerViewModel: TimerViewModel, // <- Buraya ekle
 
 
     )
@@ -70,7 +78,7 @@ fun AppNavHost(
 
 
        ) {
-         composable(NavigationItem.RegisterScreen.route) {
+         composable(RegisterScreen.route) {
               RegisterScreen(navController, viewModel)
          }
 
@@ -79,10 +87,10 @@ fun AppNavHost(
            LoginScreen(navController)
        }
        composable(NavigationItem.BaseScreen.route) {
-           BaseScreen(navController)
+           BaseScreen(navController, timerViewModel)
        }
        composable(NavigationItem.ProfileScreen.route) {
-           ProfileScreen(navController, viewModel)
+           ProfileScreen(navController, viewModel,timerViewModel)
        }
 
     }

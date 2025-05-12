@@ -1,5 +1,6 @@
 package com.tapandtest.app.Screens
 
+import DatabaseViewModel
 import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.Toast
@@ -55,6 +56,8 @@ import com.tapandtest.app.R
 import com.tapandtest.app.firebaseviewmodel.AuthViewModel
 import java.util.Locale
 import androidx.core.content.edit
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.firebase.auth.FirebaseAuth
 
 
 @SuppressLint("UseKtx")
@@ -64,6 +67,7 @@ fun RegisterScreen(
     navController: NavController,
     viewModel: AuthViewModel
 ) {
+     val auth = FirebaseAuth.getInstance()
     val context = LocalContext.current
     val sharedPreferences = context.getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
 
@@ -71,6 +75,8 @@ fun RegisterScreen(
     var Eposta by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var expended by remember { mutableStateOf(false) }
+
+    val viewModel1: DatabaseViewModel = viewModel()
     var selectedDeveloper by remember { mutableStateOf("") }
     var currentLocale by remember {
         mutableStateOf(
@@ -177,7 +183,11 @@ fun RegisterScreen(
         // Input Fields
         OutlinedTextField(
             value = name,
-            onValueChange = { name = it },
+            onValueChange = {newValue ->
+                // Sadece harfleri kabul et (rakamları sil)
+                val filtered = newValue.filter { it.isLetter() || it.isWhitespace() }
+                name = filtered
+      },
             label = { Text(getString(context, R.string.name_input, localeCode = currentLocale)) },
             leadingIcon = {
                 Icon(
@@ -263,9 +273,25 @@ fun RegisterScreen(
                         }   else {
 
                             viewModel.RegisterViewModel(Eposta, password) { message ->
+
                                 if (message == "Kayıt Başarılı") {
+                                    val user = DatabaseViewModel.User(
+                                        userId = auth.currentUser?.uid.toString(),
+                                        username = name,
+                                        email = Eposta,
+                                        job = selectedDeveloper,
+                                        password = password,
+                                        bio = "",
+                                       // profilePictureUrl =
+                                        //createdAt = System.currentTimeMillis().toString()
+                                    )
+                                    viewModel1.addUser(user)
                                     // Kayıt başarılıysa ad kaydedilir ve login ekranına yönlendirilir
                                     sharedPreferences.edit().putString("name", name).apply()
+//                                    sharedPreferences.edit().putString(
+//                                        "developer",
+//                                        selectedDeveloper
+//                                    ).apply()
                                     sharedPreferences.edit()
                                         .putString("last_screen", NavigationItem.LoginScreen.route).apply()
                                     navController.navigate(NavigationItem.LoginScreen.route)

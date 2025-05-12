@@ -1,26 +1,44 @@
 <resources>
-    <string name="app_name">TapAndTest</string>
+    <string name="app_name">FocusFlow</string>
     <string name="default_web_client_id">501385562834-oflnlu6mkjqfokheeqq734q2gu3cku0k.apps.googleusercontent.com</string>
-    <string name="welcome_back">Tekrar hoş geldiniz, %s</string>
-    <string name="email_text">Eposta</string>
+    <string name="welcome_back">Tekrar hoş geldiniz, %s!</string>
+    <string name="email_text">E-posta</string>
     <string name="google_text">Google ile giriş yap</string>
     <string name="password_text">Şifre</string>
+    <string name="register_welcome_text">Odaklanma ilerlemenizi takip edin, seansları kaydedin %n. Şimdi kaydolun!</string>
     <string name="login_text">Giriş Yap</string>
-    <string name="register_welcome_text">
-    Test süreçlerini takip et,hataları kaydet  %n  ve görevlerini yönet.Hemen kaydol!
-</string>
-    <string name="passwordlength_text" >Şifre 6 karakterden uzun olmalıdır</string>
-     <string name="combo_boxnull" >Lütfen Geçerli Bir Meslek Seçiniz</string>
     <string name="name_input">Adınız ve Soyadınız</string>
-    <string name="registernav_text">Hesabın yok mu?Hemen kayıt ol</string>
+    <string name="registernav_text">Hesabınız yok mu? Hemen kayıt olun</string>
     <string name="loginav_text">Zaten bir hesabınız var mı? Giriş yapın</string>
-    <string name="combobox_text" >Lütfen Mesleğinizi Seçiniz</string>
-    <string name="registerbutton_text">Kayıt ol</string>
+    <string name="combobox_text">Lütfen Mesleğinizi Seçiniz</string>
+    <string name="registerbutton_text">Kayıt Ol</string>
     <string name="forgot_password_text">Şifremi Unuttum</string>
     <string name="select_theme">Tema Seç</string>
-    <string name="registersuccess_text"> Kayıt Başarılı </string>
-    <string name="allinputs_null"> Lütfen tüm alanları doldurunuz </string>
-    <string name="AddImage" >Profil Resmi Yükle</string>
+    <string name="combo_boxnull">Lütfen Geçerli Bir Meslek Seçiniz</string>
+    <string name="passwordlength_text">Şifre 6 karakterden uzun olmalıdır</string>
+    <string name="registersuccess_text">Kayıt Başarılı</string>
+    <string name="allinputs_null">Lütfen tüm alanları doldurunuz</string>
+
+
+    <string name="EndTimer">Zamanlayıcı Bitti. Konsantrasyon süreniz sona erdi.</string>
+    <string name="ContrasyonSelect">Konsantrasyon Süresi Seçin</string>
+    <string name="Minutes">Süre</string>
+    <string name="Second">dakika</string>
+    <string name="StartTimer">Başlat</string>
+    <string name="StopTimer">Durdur</string>
+
+    <string name="no_image">Resim Yok</string>
+    <string name="add_image">Resim Ekle</string>
+    <string name="profile_information">Profil Bilgileri</string>
+    <string name="select_developer_role">Geliştirici Rolü Seç</string>
+    <string name="name">Ad Soyad</string>
+    <string name="email">E-posta</string>
+    <string name="about">Hakkında</string>
+    <string name="update">Güncelle</string>
+    <string name="logout">Çıkış Yap</string>
+    <string name="user_updated">Kullanıcı güncellendi</string>
+    <string name="user_update_failed">Kullanıcı güncellenemedi</string>
+    <string name="dropdown_item_prefix">• </string>
 
 
 </resources>
