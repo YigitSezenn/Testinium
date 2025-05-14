@@ -1,6 +1,7 @@
 package com.tapandtest.app.Screens
 
 
+import DatabaseViewModel
 import GoogleAuthUiClient
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -35,6 +36,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -56,6 +58,7 @@ import com.tapandtest.app.AppColor.AppColors
 import com.tapandtest.app.AppNavHost.NavigationItem
 import com.tapandtest.app.R
 import com.tapandtest.app.firebaseviewmodel.AuthViewModel
+import com.tapandtest.app.firebaseviewmodel.UserData
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -104,9 +107,9 @@ fun LoginScreen(
     val sharedPreferences =
         LocalContext.current.getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
 
-    val name = sharedPreferences.getString("name", "") ?: ""
+    var name = sharedPreferences.getString("name", "") ?: ""
     var currentLocale = sharedPreferences.getString("language", "") ?: ""
-
+    val viewModel1: DatabaseViewModel = viewModel()
 
 
     Column(
@@ -135,6 +138,7 @@ fun LoginScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
+            maxLines = 1,
             value = Eposta,
             onValueChange = { Eposta = it },
             label = {
@@ -219,7 +223,9 @@ fun LoginScreen(
                             // Giriş başarılı olduğunda yapılacak işlemler
 
                             navController.navigate(NavigationItem.BaseScreen.route)
-                            sharedPreferences.edit().putString("last_screen", NavigationItem.BaseScreen.route).apply()
+                            sharedPreferences.edit()
+                                .putString("last_screen", NavigationItem.BaseScreen.route).apply()
+
                         } else {
                             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                         }
@@ -285,6 +291,7 @@ fun LoginScreen(
             modifier = Modifier
                 .clickable {
                     navController.navigate(NavigationItem.RegisterScreen.route)
+
                 }
         )
     }

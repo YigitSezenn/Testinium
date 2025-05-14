@@ -1,5 +1,7 @@
 package com.tapandtest.app.Screens
 
+import DatabaseViewModel
+import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -53,14 +55,19 @@ import com.tapandtest.app.AppNavHost.NavigationItem
 import com.tapandtest.app.R
 import com.tapandtest.app.firebaseviewmodel.AuthViewModel
 import java.util.Locale
+import androidx.core.content.edit
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.firebase.auth.FirebaseAuth
 
 
+@SuppressLint("UseKtx")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen(
     navController: NavController,
     viewModel: AuthViewModel
 ) {
+     val auth = FirebaseAuth.getInstance()
     val context = LocalContext.current
     val sharedPreferences = context.getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
 
@@ -68,6 +75,8 @@ fun RegisterScreen(
     var Eposta by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var expended by remember { mutableStateOf(false) }
+
+    val viewModel1: DatabaseViewModel = viewModel()
     var selectedDeveloper by remember { mutableStateOf("") }
     var currentLocale by remember {
         mutableStateOf(
@@ -174,7 +183,11 @@ fun RegisterScreen(
         // Input Fields
         OutlinedTextField(
             value = name,
-            onValueChange = { name = it },
+            onValueChange = {newValue ->
+                // Sadece harfleri kabul et (rakamları sil)
+                val filtered = newValue.filter { it.isLetter() || it.isWhitespace() }
+                name = filtered
+      },
             label = { Text(getString(context, R.string.name_input, localeCode = currentLocale)) },
             leadingIcon = {
                 Icon(
@@ -244,26 +257,54 @@ fun RegisterScreen(
         Button(
             onClick = {
                 if (name.isNotEmpty() && Eposta.isNotEmpty() && password.isNotEmpty()) {
-                    viewModel.RegisterViewModel(Eposta, password) { message ->
+
                         if (password.length < 6) {
-                            Toast.makeText(context, "Şifre en az 6 karakter olmalıdır", Toast.LENGTH_SHORT).show()
-                        }
-                        // Geliştirici seçilip seçilmediğini kontrol et
-                        else if (selectedDeveloper.isEmpty()) {
-                            Toast.makeText(context, "Lütfen bir geliştirici seçin", Toast.LENGTH_SHORT).show()
-                        }
-                        // Kayıt başarılı ise, adını kaydet ve giriş ekranına yönlendir
-                        else if (message == "Kayıt Başarılı") {
-                            sharedPreferences.edit().putString("name", name).apply()
-                            sharedPreferences.edit().putString("last_screen", NavigationItem.LoginScreen.route).apply()
-                            navController.navigate(NavigationItem.LoginScreen.route)
+                            Toast.makeText(
+                                context, R.string.passwordlength_text, Toast.LENGTH_SHORT
+
+
+                            ).show()
+                        } else if (selectedDeveloper.isEmpty()) {
+                            Toast.makeText(
+                                context,
+                                R.string.combobox_text,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }   else {
+
+                            viewModel.RegisterViewModel(Eposta, password) { message ->
+
+                                if (message == "Kayıt Başarılı") {
+                                    val user = DatabaseViewModel.User(
+                                        userId = auth.currentUser?.uid.toString(),
+                                        username = name,
+                                        email = Eposta,
+                                        job = selectedDeveloper,
+                                        password = password,
+                                        bio = "",
+                                       // profilePictureUrl =
+                                        //createdAt = System.currentTimeMillis().toString()
+                                    )
+                                    viewModel1.addUser(user)
+                                    // Kayıt başarılıysa ad kaydedilir ve login ekranına yönlendirilir
+                                    sharedPreferences.edit().putString("name", name).apply()
+//                                    sharedPreferences.edit().putString(
+//                                        "developer",
+//                                        selectedDeveloper
+//                                    ).apply()
+                                    sharedPreferences.edit()
+                                        .putString("last_screen", NavigationItem.LoginScreen.route).apply()
+                                    navController.navigate(NavigationItem.LoginScreen.route)
+                                }
+                            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                         }
                     }
-
                 } else {
-                    Toast.makeText(context, "Lütfen tüm alanları doldurunuz", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, R.string.allinputs_null, Toast.LENGTH_SHORT)
+                        .show()
                 }
             },
+
             modifier = Modifier
                 .fillMaxWidth()
                 .height(70.dp)
