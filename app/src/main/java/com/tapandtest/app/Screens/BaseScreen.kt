@@ -131,7 +131,7 @@ fun BaseScreen(navController: NavController, timerViewModel: TimerViewModel) {
 
         ) {
             Text(
-                text = getString(context, R.string.Minutes, localeCode = currentLocale) + ": $selectedMinutes ${getString(context, R.string.Second, localeCode = currentLocale)}",
+                text = getString(context, R.string.Minutes, localeCode = currentLocale) + ": $selectedMinutes ${getString(context, R.string.Minutes, localeCode = currentLocale)}",
                 color = AppColors.PrimaryAmethyst,
                 style = MaterialTheme.typography.bodyLarge
             )

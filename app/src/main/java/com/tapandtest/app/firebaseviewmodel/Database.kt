@@ -1,4 +1,5 @@
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,16 +17,14 @@ class DatabaseViewModel : ViewModel() {
     private val _user = MutableLiveData<User>()
     val user: LiveData<User> get() = _user
 
-
     data class User(
-        val userId: String? = null,
-        val username: String? = null,
-        val email: String? = null,
-        val password: String? = null,
-        val job: String? = null,
-        val bio: String? = null,
-        val profilePictureUrl: String ? = null,
-        // val createdAt: Long = 0L // Ekstra bir tarih değeri isterseniz
+        val userId: String? = "",
+        val username: String? = "",
+        val email: String? = "",
+        val password: String? = "",
+        val job: String? = "",
+        val bio: String? = "",
+        val profilePictureUrl: String? = ""
     ) {
         constructor() : this(
             userId = "",
@@ -34,6 +33,8 @@ class DatabaseViewModel : ViewModel() {
             password = "",
             job = "",
             bio = "",
+            profilePictureUrl = ""
+
 
         )
 
@@ -110,8 +111,9 @@ class DatabaseViewModel : ViewModel() {
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val user = snapshot.getValue(User::class.java)
-                    _user.value = user!!
-                    callback(user) // Pass the user data to the callback
+                    _user.value = user!! // Update LiveData
+                    callback(user) // Pass the user data to the callback,
+                    Log.d("UserData", "Fetched user: $user")
                 }
 
                 override fun onCancelled(error: DatabaseError) {

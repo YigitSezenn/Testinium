@@ -22,8 +22,9 @@
 
     <string name="EndTimer">Zamanlayıcı Bitti. Konsantrasyon süreniz sona erdi.</string>
     <string name="ContrasyonSelect">Konsantrasyon Süresi Seçin</string>
-    <string name="Minutes">Süre</string>
-    <string name="Second">dakika</string>
+    <string name="Minutes">Dakika</string>
+    <string name="Second">saniye</string>
+
     <string name="StartTimer">Başlat</string>
     <string name="StopTimer">Durdur</string>
 

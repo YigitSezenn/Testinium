@@ -78,7 +78,7 @@ private fun AppContent() {
 
     val navController = rememberNavController()
 
-    val lastScreen = sharedPreferences.getString("last_screen", NavigationItem.RegisterScreen.route) ?: NavigationItem.BaseScreen.route //
+    val lastScreen = sharedPreferences.getString("last_screen", NavigationItem.LoginScreen.route) ?: NavigationItem.BaseScreen.route //
 
     var isDarkTheme by remember {
         mutableStateOf(sharedPreferences.getBoolean("dark_mode", false))
